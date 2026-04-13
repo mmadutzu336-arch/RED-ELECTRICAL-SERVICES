@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState, useCallback, useMemo } from "react";
 
 const OWNER_NAME = "Rosu Madalin";
@@ -10,6 +11,13 @@ const TRANSLATIONS = {
     about: "About us",
     services: "Services",
     projects: "Projects",
+    feedback: "Feedback",
+    leaveComment: "Leave a comment",
+    commentNamePlaceholder: "Your name",
+    commentTextareaPlaceholder: "Share your experience...",
+    commentSubmit: "Submit comment",
+    recentComments: "Recent comments",
+    viewProject: "View project",
     contact: "Contact",
     heroTitle: "Professional Electrician in Larnaca",
     heroSub: "Installations • Repairs • Maintenance • Fast response",
@@ -19,6 +27,13 @@ const TRANSLATIONS = {
     about: "Despre noi",
     services: "Servicii",
     projects: "Proiecte",
+    feedback: "Feedback",
+    leaveComment: "Lasă un comentariu",
+    commentNamePlaceholder: "Numele tău",
+    commentTextareaPlaceholder: "Spune-ne despre experiența ta...",
+    commentSubmit: "Trimite comentariu",
+    recentComments: "Comentarii recente",
+    viewProject: "Vezi proiectul",
     contact: "Contact",
     heroTitle: "Electrician profesionist în Larnaca",
     heroSub: "Instalații • Reparații • Mentenanță • Intervenții rapide",
@@ -28,6 +43,13 @@ const TRANSLATIONS = {
     about: "Σχετικά",
     services: "Υπηρεσίες",
     projects: "Έργα",
+    feedback: "Ανατροφοδότηση",
+    leaveComment: "Αφήστε ένα σχόλιο",
+    commentNamePlaceholder: "Το όνομά σας",
+    commentTextareaPlaceholder: "Μοιραστείτε την εμπειρία σας...",
+    commentSubmit: "Υποβολή σχολίου",
+    recentComments: "Πρόσφατα σχόλια",
+    viewProject: "Δείτε το έργο",
     contact: "Επικοινωνία",
     heroTitle: "Επαγγελματίας ηλεκτρολόγος στη Λάρνακα",
     heroSub: "Εγκαταστάσεις • Επισκευές • Συντήρηση • Άμεση εξυπηρέτηση",
@@ -37,6 +59,13 @@ const TRANSLATIONS = {
     about: "О нас",
     services: "Услуги",
     projects: "Проекты",
+    feedback: "Отзывы",
+    leaveComment: "Оставить комментарий",
+    commentNamePlaceholder: "Ваше имя",
+    commentTextareaPlaceholder: "Расскажите о своем опыте...",
+    commentSubmit: "Отправить комментарий",
+    recentComments: "Последние комментарии",
+    viewProject: "Посмотреть проект",
     contact: "Контакты",
     heroTitle: "Электрик в Ларнаке",
     heroSub: "Установка • Ремонт • Обслуживание • Быстро",
@@ -46,6 +75,13 @@ const TRANSLATIONS = {
     about: "Über uns",
     services: "Leistungen",
     projects: "Projekte",
+    feedback: "Feedback",
+    leaveComment: "Hinterlasse einen Kommentar",
+    commentNamePlaceholder: "Dein Name",
+    commentTextareaPlaceholder: "Teile deine Erfahrung...",
+    commentSubmit: "Kommentar senden",
+    recentComments: "Neueste Kommentare",
+    viewProject: "Projekt ansehen",
     contact: "Kontakt",
     heroTitle: "Elektriker in Larnaca",
     heroSub: "Installation • Reparatur • Wartung • Schnell",
@@ -55,6 +91,13 @@ const TRANSLATIONS = {
     about: "من نحن",
     services: "الخدمات",
     projects: "المشاريع",
+    feedback: "التعليقات",
+    leaveComment: "اترك تعليقًا",
+    commentNamePlaceholder: "اسمك",
+    commentTextareaPlaceholder: "شارك تجربتك...",
+    commentSubmit: "إرسال تعليق",
+    recentComments: "التعليقات الأخيرة",
+    viewProject: "عرض المشروع",
     contact: "اتصل بنا",
     heroTitle: "كهربائي محترف في لارنكا",
     heroSub: "تركيب • إصلاح • صيانة • خدمة سريعة",
@@ -72,12 +115,78 @@ const SERVICES = [
 ];
 
 const PROJECTS = [
-  "Villa Electrical System",
-  "Restaurant LED Upgrade",
-  "Industrial Panel Wiring",
-  "Apartment Renovation",
-  "Smart Home Setup",
-  "Emergency Fixes",
+  {
+    title: "Villa Electrical System",
+    description: "Complete electrical setup for a luxury villa, including panel installation and outdoor lighting.",
+    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  {
+    title: "Restaurant LED Upgrade",
+    description: "Modern LED lighting retrofit for a restaurant that improves ambiance and energy efficiency.",
+    image: "https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1517256064527-09c73fc73e97?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  {
+    title: "Industrial Panel Wiring",
+    description: "High-capacity wiring for industrial machines and control panels in a factory setting.",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  {
+    title: "Apartment Renovation",
+    description: "Electrical renovation for a modern apartment, with smart switches and safe wiring.",
+    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  {
+    title: "Smart Home Setup",
+    description: "Smart home system installation with automated lighting, security, and energy control.",
+    image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  {
+    title: "Emergency Fixes",
+    description: "Rapid response repairs for electrical faults and urgent safety issues.",
+    image: "https://images.unsplash.com/photo-1516910817561-7372dad06f55?auto=format&fit=crop&w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1516910817561-7372dad06f55?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+];
+
+const FEEDBACKS = [
+  {
+    name: "Ioana M.",
+    location: "Larnaca",
+    text: "Servicii excelente și intervenție rapidă. Recomand pentru orice lucrare electrică.",
+  },
+  {
+    name: "George P.",
+    location: "Nicosia",
+    text: "Instalarea a fost făcută curat și profesionist. Comunicare excelentă.",
+  },
+  {
+    name: "Maria C.",
+    location: "Limassol",
+    text: "Am apelat în regim de urgență și am primit ajutor imediat. Mulțumesc mult!",
+  },
 ];
 
 const Logo = () => (
@@ -93,6 +202,10 @@ const ADMIN_PASSWORD = "lessalahores2026";
 
 export default function PersonalSite() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [commentForm, setCommentForm] = useState({ name: "", message: "" });
+  const [comments, setComments] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [lang, setLang] = useState("en");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -126,6 +239,52 @@ export default function PersonalSite() {
       }
     },
     [form]
+  );
+
+  const handleCommentChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setCommentForm((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const handleProjectOpen = useCallback((project) => {
+    setSelectedProject(project);
+    setSelectedImageIndex(0);
+  }, []);
+
+  const handleProjectClose = useCallback(() => {
+    setSelectedProject(null);
+  }, []);
+
+  const handleProjectPrev = useCallback(() => {
+    if (!selectedProject) return;
+    setSelectedImageIndex((current) =>
+      (current - 1 + selectedProject.images.length) % selectedProject.images.length
+    );
+  }, [selectedProject]);
+
+  const handleProjectNext = useCallback(() => {
+    if (!selectedProject) return;
+    setSelectedImageIndex((current) =>
+      (current + 1) % selectedProject.images.length
+    );
+  }, [selectedProject]);
+
+  const handleCommentSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (!commentForm.name.trim() || !commentForm.message.trim()) {
+        alert("Please enter your name and comment.");
+        return;
+      }
+
+      setComments((prev) => [
+        { name: commentForm.name, text: commentForm.message },
+        ...prev,
+      ]);
+      setCommentForm({ name: "", message: "" });
+    },
+    [commentForm]
   );
 
   return (
@@ -219,12 +378,176 @@ export default function PersonalSite() {
           {PROJECTS.map((project, idx) => (
             <div
               key={idx}
-              className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow duration-200"
+              className="group bg-white overflow-hidden rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer"
+              onClick={() => handleProjectOpen(project)}
             >
-              <p className="font-semibold text-gray-800">{project}</p>
+              <Image
+                src={project.image}
+                alt={project.title}
+                width={800}
+                height={192}
+                className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">{project.title}</h3>
+                <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center rounded-full border border-orange-600 px-4 py-2 text-sm font-semibold text-orange-600 transition-colors duration-200 hover:bg-orange-600 hover:text-white"
+                >
+                  {t.viewProject}
+                </button>
+              </div>
             </div>
           ))}
         </div>
+      </section>
+
+      {selectedProject && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+          onClick={handleProjectClose}
+        >
+          <div
+            className="relative w-full max-w-4xl rounded-3xl bg-white shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={handleProjectClose}
+              className="absolute right-4 top-4 rounded-full bg-white/90 p-2 text-gray-700 shadow hover:bg-white"
+              aria-label="Close project preview"
+            >
+              ×
+            </button>
+            <Image
+              src={selectedProject.images[selectedImageIndex]}
+              alt={`${selectedProject.title} image ${selectedImageIndex + 1}`}
+              width={1200}
+              height={500}
+              className="h-80 w-full object-cover"
+            />
+            <div className="p-8">
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <h3 className="text-3xl font-bold">{selectedProject.title}</h3>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleProjectPrev}
+                    className="rounded-full border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleProjectNext}
+                    className="rounded-full border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+              <p className="text-gray-700 leading-relaxed mb-6">{selectedProject.description}</p>
+              <div className="grid grid-cols-3 gap-3">
+                {selectedProject.images.map((image, index) => (
+                  <button
+                    key={image}
+                    type="button"
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`h-20 overflow-hidden rounded-2xl border ${
+                      index === selectedImageIndex ? "border-orange-600" : "border-gray-200"
+                    }`}
+                  >
+                    <Image
+                    src={image}
+                    alt={`${selectedProject.title} thumbnail ${index + 1}`}
+                    width={160}
+                    height={80}
+                    className="h-full w-full object-cover"
+                  />
+                  </button>
+                ))}
+              </div>
+              <p className="mt-4 text-sm text-gray-500">Click outside to close.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Feedback */}
+      <section id="feedback" className="p-12 bg-gray-100">
+        <h2 className="text-3xl font-bold text-center mb-8">{t.feedback}</h2>
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {FEEDBACKS.map((feedback, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-shadow duration-200"
+            >
+              <p className="text-gray-700 leading-relaxed mb-4">“{feedback.text}”</p>
+              <div className="text-sm font-semibold text-orange-600">{feedback.name}</div>
+              <div className="text-xs text-gray-500">{feedback.location}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 max-w-4xl mx-auto">
+          <h3 className="text-2xl font-bold mb-4">{t.leaveComment}</h3>
+          <form onSubmit={handleCommentSubmit} className="bg-white p-8 rounded-2xl shadow-lg space-y-4">
+            <div>
+              <label htmlFor="commentName" className="block text-sm font-medium mb-1">
+                {t.commentNamePlaceholder}
+              </label>
+              <input
+                id="commentName"
+                name="name"
+                type="text"
+                placeholder={t.commentNamePlaceholder}
+                value={commentForm.name}
+                onChange={handleCommentChange}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="commentMessage" className="block text-sm font-medium mb-1">
+                {t.commentTextareaPlaceholder}
+              </label>
+              <textarea
+                id="commentMessage"
+                name="message"
+                placeholder={t.commentTextareaPlaceholder}
+                value={commentForm.message}
+                onChange={handleCommentChange}
+                rows="4"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="bg-orange-600 hover:bg-orange-700 text-white w-full py-3 rounded-lg font-bold transition-colors duration-200"
+            >
+              {t.commentSubmit}
+            </button>
+          </form>
+        </div>
+
+        {comments.length > 0 && (
+          <div className="mt-10 max-w-6xl mx-auto">
+            <h3 className="text-2xl font-bold mb-6">{t.recentComments}</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {comments.map((comment, idx) => (
+                <div
+                  key={`comment-${idx}`}
+                  className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-shadow duration-200"
+                >
+                  <p className="text-gray-700 leading-relaxed mb-4">“{comment.text}”</p>
+                  <div className="text-sm font-semibold text-orange-600">{comment.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Contact */}
